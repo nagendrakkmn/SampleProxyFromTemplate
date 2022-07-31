@@ -1,0 +1,53 @@
+name: shell Commands
+
+on: [push]
+
+jobs:
+  bash-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '11'
+          
+      - name: Set up Maven2 test1
+        uses: stCarolas/setup-maven@v4.4
+        with:
+          maven-version: 3.8.2
+        
+          
+      - name: List Files
+        run:  |
+          pwd
+          ls -a     
+          
+      - name: Checkout
+        uses: actions/checkout@v1        
+      - name: List Files after
+        run:  |
+          pwd
+          ls -a
+          mvn -f "./apigee-deploy-maven-plugin-master/samples/mockapi-recommended/src/gateway/Mock-v1" install -Ptest -Dusername=nagendra_123kkmn@yahoo.com -Dpassword=test213123 -Dorg=nagendram 
+      - name: Group of log lines
+        run: |
+            echo "Hi Team"
+            echo "How are you"
+            echo "byee"
+      - name: multiline script
+        run:  |
+          node -v
+          npm -v
+      - name: python Command
+        run: |
+          import platform
+          print(platform.processor())
+        shell: python
+      - name: Simple JS action
+        id: greet
+        uses: actions/hello-world-javascript-action@main
+        with:
+          who-to-greet: 'Mona the Octocat'
+      -  name: Log Greeting Time
+         run: echo "${{ steps.greet.outputs.time}}"
