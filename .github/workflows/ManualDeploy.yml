@@ -1,0 +1,33 @@
+name: manul deployment
+
+on:
+ workflow_dispatch:
+  inputs:
+    ApigeeOrg:
+      type: choice
+      description: select Org to deploy 
+      options:
+      - shell-nonprod
+      - shell
+    environment:
+      type: choice
+      description: select env to deploy 
+      options:
+        - dev
+        - test
+        - prod
+jobs:
+  Proxy-Deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: populate profile 
+         apigeeProfile="dev"
+           if:${{(github.event.inputs.environment == "dev" && github.event.inputs.ApigeeOrg == "shell-nonprod")}}
+           apigeeProfile = "dev"
+           if:${{(github.event.inputs.environment == "test" && github.event.inputs.ApigeeOrg == "shell")}}
+           apigeeProfile = "test"
+            if:${{(github.event.inputs.environment == "prod" && github.event.inputs.ApigeeOrg == "shell")}}
+            apigeeProfile = "prod"
+            
+      - run: echo "Print profile - ${{apigeeProfile}}"
+            
